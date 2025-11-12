@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/resources/fangnai.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="jiajian233">
+  <meta name="keywords" content="Docker,聊天机器人">
+  
+    <meta name="description" content="📖 简介Koishi 是一个功能强大、可扩展的跨平台机器人框架。本指南将引导你如何在 Ubuntu 服务器上，通过 Docker 快速部署 Koishi，并使用 NapCat 作为 QQ 适配器，最终搭建一个稳定、高效的 QQ 机器人。  ⚠️ 准备工作在开始之前，请确保你已准备好以下环境：  一台拥有公网 IP 的 Ubuntu 服务器。 一个用于登录的 QQ 小号。 确保服务器防火墙或云服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过Docker+Koishi+NapCat搭建QQ机器人">
+<meta property="og:url" content="https://wjiajian.github.io.git/2025/11/12/Koishi/Koishi/index.html">
+<meta property="og:site_name" content="Jiajian&#39;s Blog">
+<meta property="og:description" content="📖 简介Koishi 是一个功能强大、可扩展的跨平台机器人框架。本指南将引导你如何在 Ubuntu 服务器上，通过 Docker 快速部署 Koishi，并使用 NapCat 作为 QQ 适配器，最终搭建一个稳定、高效的 QQ 机器人。  ⚠️ 准备工作在开始之前，请确保你已准备好以下环境：  一台拥有公网 IP 的 Ubuntu 服务器。 一个用于登录的 QQ 小号。 确保服务器防火墙或云服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wjiajian.github.io.git/images/koishi/websocket%20server.png">
+<meta property="article:published_time" content="2025-11-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-12T02:18:18.774Z">
+<meta property="article:author" content="jiajian233">
+<meta property="article:tag" content="聊天机器人">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wjiajian.github.io.git/images/koishi/websocket%20server.png">
+  
+  
+  
+  <title>通过Docker+Koishi+NapCat搭建QQ机器人 - Jiajian&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"wjiajian.github.io.git","root":"/","version":"1.9.8","typing":{"enable":"ture","typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>JIAJIAN</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="通过Docker+Koishi+NapCat搭建QQ机器人"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-11-12 00:00" pubdate>
+          2025年11月12日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">通过Docker+Koishi+NapCat搭建QQ机器人</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="📖-简介"><a href="#📖-简介" class="headerlink" title="📖 简介"></a>📖 简介</h2><p><a target="_blank" rel="noopener" href="https://koishi.chat/zh-CN/">Koishi</a> 是一个功能强大、可扩展的跨平台机器人框架。本指南将引导你如何在 Ubuntu 服务器上，通过 Docker 快速部署 Koishi，并使用 <a target="_blank" rel="noopener" href="https://github.com/NapNeko/NapCat-Installer">NapCat</a> 作为 QQ 适配器，最终搭建一个稳定、高效的 QQ 机器人。</p>
+<hr>
+<h2 id="⚠️-准备工作"><a href="#⚠️-准备工作" class="headerlink" title="⚠️ 准备工作"></a>⚠️ 准备工作</h2><p>在开始之前，请确保你已准备好以下环境：</p>
+<ol>
+<li>一台拥有公网 IP 的 Ubuntu 服务器。</li>
+<li>一个用于登录的 QQ 小号。</li>
+<li>确保服务器防火墙或云服务商安全组已开放以下端口：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="left">端口</th>
+<th align="left">用途</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>5140</code></td>
+<td align="left"><strong>Koishi 控制台</strong></td>
+<td align="left">用于访问 Koishi 的网页管理面板。</td>
+</tr>
+<tr>
+<td align="left"><code>6099</code></td>
+<td align="left"><strong>NapCat WebUI</strong></td>
+<td align="left">用于访问 NapCat 的网页管理面板（扫码登录）。</td>
+</tr>
+<tr>
+<td align="left"><code>3001</code></td>
+<td align="left"><strong>NapCat HTTP API</strong></td>
+<td align="left">NapCat 提供的 HTTP API 端口。</td>
+</tr>
+<tr>
+<td align="left"><code>3000</code></td>
+<td align="left"><strong>NapCat 正向 WebSocket API</strong></td>
+<td align="left">Koishi 连接 NapCat 所使用的端口。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="步骤一：安装-Docker-环境"><a href="#步骤一：安装-Docker-环境" class="headerlink" title="步骤一：安装 Docker 环境"></a>步骤一：安装 Docker 环境</h2><p>本部分参考自博客 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/lanyusky/p/19187095">蓝羽天空</a>，并已适配国内网络环境。</p>
+<h4 id="1-检查旧版本"><a href="#1-检查旧版本" class="headerlink" title="1. 检查旧版本"></a>1. 检查旧版本</h4><p>验证当前环境是否已安装旧版本 Docker。如果已安装，建议先卸载。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker -v<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-更新软件包索引并安装依赖"><a href="#2-更新软件包索引并安装依赖" class="headerlink" title="2. 更新软件包索引并安装依赖"></a>2. 更新软件包索引并安装依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt update<br><span class="hljs-built_in">sudo</span> apt install -y ca-certificates curl<br></code></pre></td></tr></table></figure>
+
+<h4 id="3-添加-Docker-的-GPG-密钥"><a href="#3-添加-Docker-的-GPG-密钥" class="headerlink" title="3. 添加 Docker 的 GPG 密钥"></a>3. 添加 Docker 的 GPG 密钥</h4><p>GPG 密钥用于验证软件包的完整性，确保其来源可信。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 创建用于存储 GPG 密钥的目录</span><br><span class="hljs-built_in">sudo</span> install -m 0755 -d /etc/apt/keyrings<br><br><span class="hljs-comment"># 下载 GPG 密钥（使用阿里云镜像）</span><br><span class="hljs-built_in">sudo</span> curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc<br><br><span class="hljs-comment"># 更改密钥文件的权限，确保 apt 可以读取</span><br><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">chmod</span> a+r /etc/apt/keyrings/docker.asc<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-添加-Docker-软件源"><a href="#4-添加-Docker-软件源" class="headerlink" title="4. 添加 Docker 软件源"></a>4. 添加 Docker 软件源</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> \<br>  <span class="hljs-string">&quot;deb [arch=<span class="hljs-subst">$(dpkg --print-architecture)</span> signed-by=/etc/apt/keyrings/docker.asc] http://mirrors.aliyun.com/docker-ce/linux/ubuntu \</span><br><span class="hljs-string">  <span class="hljs-subst">$(. /etc/os-release &amp;&amp; echo <span class="hljs-string">&quot;<span class="hljs-variable">$&#123;UBUNTU_CODENAME:-<span class="hljs-variable">$VERSION_CODENAME</span>&#125;</span>&quot;</span>)</span> stable&quot;</span> | \<br>  <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null<br></code></pre></td></tr></table></figure>
+
+<h4 id="5-安装-Docker"><a href="#5-安装-Docker" class="headerlink" title="5. 安装 Docker"></a>5. 安装 Docker</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 更新软件包索引</span><br><span class="hljs-built_in">sudo</span> apt update<br><br><span class="hljs-comment"># 安装 Docker 最新版本</span><br><span class="hljs-built_in">sudo</span> apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin<br></code></pre></td></tr></table></figure>
+
+<h4 id="6-配置国内镜像源"><a href="#6-配置国内镜像源" class="headerlink" title="6. 配置国内镜像源"></a>6. 配置国内镜像源</h4><p>为了提升拉取 Docker 镜像的速度，建议配置国内镜像源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> /etc/docker/daemon.json &gt; /dev/null &lt;&lt;<span class="hljs-string">EOF</span><br><span class="hljs-string">&#123;</span><br><span class="hljs-string">  &quot;registry-mirrors&quot;: [</span><br><span class="hljs-string">    &quot;https://docker.m.daocloud.io&quot;,</span><br><span class="hljs-string">    &quot;http://hub-mirror.c.163.com&quot;,</span><br><span class="hljs-string">    &quot;https://docker.nju.edu.cn&quot;</span><br><span class="hljs-string">  ]</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="7-重启并验证-Docker"><a href="#7-重启并验证-Docker" class="headerlink" title="7. 重启并验证 Docker"></a>7. 重启并验证 Docker</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 重启 Docker 服务使配置生效</span><br><span class="hljs-built_in">sudo</span> systemctl restart docker<br><br><span class="hljs-comment"># 设置 Docker 开机自启</span><br><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> docker<br><br><span class="hljs-comment"># 验证 Docker 是否安装成功并可以正常运行</span><br><span class="hljs-built_in">sudo</span> docker run hello-world<br></code></pre></td></tr></table></figure>
+<p>如果能看到 “Hello from Docker!” 字样，说明 Docker 已成功安装。</p>
+<hr>
+<h2 id="步骤二：使用-Docker-安装-Koishi"><a href="#步骤二：使用-Docker-安装-Koishi" class="headerlink" title="步骤二：使用 Docker 安装 Koishi"></a>步骤二：使用 Docker 安装 Koishi</h2><p>运行以下命令来启动 Koishi 容器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d \<br>  --name koishi \<br>  --restart always \<br>  -p 5140:5140 \<br>  -v /root/koishi_data:/koishi \<br>  -e TZ=Asia/Shanghai \<br>  koishijs/koishi<br></code></pre></td></tr></table></figure>
+
+<p><strong>参数说明:</strong></p>
+<ul>
+<li><code>-d</code>: 后台运行容器。</li>
+<li><code>--name koishi</code>: 将容器命名为 <code>koishi</code>，方便管理。</li>
+<li><code>--restart always</code>: 容器退出时总是自动重启。</li>
+<li><code>-p 5140:5140</code>: 将宿主机的 5140 端口映射到容器的 5140 端口。</li>
+<li><code>-v /root/koishi_data:/koishi</code>: 将 Koishi 的数据（配置、插件等）持久化到宿主机的 <code>/root/koishi_data</code> 目录。</li>
+<li><code>-e TZ=Asia/Shanghai</code>: 设置时区为东八区，确保日志时间正确。</li>
+</ul>
+<blockquote>
+<p>容器运行后，稍等片刻即可通过浏览器访问 <code>http://&lt;你的服务器IP&gt;:5140</code> 进入 Koishi 控制台。</p>
+</blockquote>
+<hr>
+<h2 id="步骤三：安装并运行-NapCat"><a href="#步骤三：安装并运行-NapCat" class="headerlink" title="步骤三：安装并运行 NapCat"></a>步骤三：安装并运行 NapCat</h2><h4 id="1-一键安装-NapCat"><a href="#1-一键安装-NapCat" class="headerlink" title="1. 一键安装 NapCat"></a>1. 一键安装 NapCat</h4><p>使用官方提供的一键安装脚本，以 TUI (终端图形界面) 模式进行安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -o napcat.sh https://nclatest.znin.net/NapNeko/NapCat-Installer/main/script/install.sh &amp;&amp; <span class="hljs-built_in">sudo</span> bash napcat.sh --tui<br></code></pre></td></tr></table></figure>
+<p>根据提示完成安装即可。</p>
+<h4 id="2-后台运行-NapCat"><a href="#2-后台运行-NapCat" class="headerlink" title="2. 后台运行 NapCat"></a>2. 后台运行 NapCat</h4><p>为了让 NapCat 能在关闭 SSH 连接后依然保持运行，我们使用 <code>screen</code> 工具。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动一个名为 napcat 的后台会话，并运行 NapCat</span><br>screen -dmS napcat bash -c <span class="hljs-string">&quot;xvfb-run -a /root/Napcat/opt/QQ/qq --no-sandbox&quot;</span><br><br><span class="hljs-comment"># 如果需要附加到会话查看日志或扫码</span><br>screen -r napcat<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>提示</strong>：在 <code>screen</code> 会话中，按 <code>Ctrl+A</code> 然后按 <code>D</code> 可以分离会话（使其在后台继续运行）。</p>
+</blockquote>
+<h4 id="3-登录-QQ"><a href="#3-登录-QQ" class="headerlink" title="3. 登录 QQ"></a>3. 登录 QQ</h4><p>访问 <code>http://&lt;你的服务器IP&gt;:6099/webui</code>，进入 NapCat 的 WebUI，使用手机 QQ 扫描二维码登录。</p>
+<hr>
+<h2 id="步骤四：连接-Koishi-与-NapCat"><a href="#步骤四：连接-Koishi-与-NapCat" class="headerlink" title="步骤四：连接 Koishi 与 NapCat"></a>步骤四：连接 Koishi 与 NapCat</h2><h4 id="1-NapCat-中开启-WebSocket-服务"><a href="#1-NapCat-中开启-WebSocket-服务" class="headerlink" title="1. NapCat 中开启 WebSocket 服务"></a>1. NapCat 中开启 WebSocket 服务</h4><p>进入 NapCat WebUI (<code>http://&lt;你的服务器IP&gt;:6099/webui</code>) 后：</p>
+<ol>
+<li>点击左侧的「<strong>网络配置</strong>」。</li>
+<li>点击左上角的「<strong>添加配置</strong>」。</li>
+<li>新建一个「<strong>正向 Websocket 服务器</strong>」，格式如下图所示，然后保存。</li>
+</ol>
+<p><img src="/websocket%20server.png" srcset="/img/loading.gif" lazyload alt="NapCat WebSocket 配置"></p>
+<h4 id="2-Koishi-中安装-OneBot-适配器"><a href="#2-Koishi-中安装-OneBot-适配器" class="headerlink" title="2. Koishi 中安装 OneBot 适配器"></a>2. Koishi 中安装 OneBot 适配器</h4><p>NapCat 兼容 OneBot v11 协议，因此我们需要在 Koishi 中安装相应的适配器。</p>
+<ol>
+<li>进入 Koishi 控制台 (<code>http://&lt;你的服务器IP&gt;:5140</code>)。</li>
+<li>在左侧菜单中点击「<strong>插件市场</strong>」。</li>
+<li>搜索 <code>adapter-onebot</code> 并安装它。</li>
+</ol>
+<h4 id="3-配置-OneBot-适配器"><a href="#3-配置-OneBot-适配器" class="headerlink" title="3. 配置 OneBot 适配器"></a>3. 配置 OneBot 适配器</h4><p>安装完成后，Koishi 会自动跳转到配置页面（或在「插件配置」中找到 <code>adapter-onebot</code>）。</p>
+<ol>
+<li>点击「<strong>添加机器人</strong>」。</li>
+<li>在弹出的表单中，关键配置如下：<ul>
+<li><strong><code>protocol</code></strong>: 选择 <code>ws</code> (正向 WebSocket)。</li>
+<li><strong><code>endpoint</code></strong>: 填写 NapCat 的 WebSocket 地址，即 <code>ws://127.0.0.1:3000</code>。<blockquote>
+<p><strong>注意</strong>：因为 Koishi 和 NapCat 运行在同一台服务器的 Docker 网络中，此处建议使用 <code>ws://host.docker.internal:3000</code> 或宿主机内网IP，<code>127.0.0.1</code> 可能无法访问。最稳妥的方式是直接使用服务器的公网IP，例如 <code>ws://&lt;你的服务器IP&gt;:3000</code>。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>保存配置并启用该插件。</li>
+</ol>
+<p>如果一切顺利，你应该能在 Koishi 控制台的「连接」页面看到状态为「ONLINE」的机器人。</p>
+<hr>
+<h2 id="✅-完成"><a href="#✅-完成" class="headerlink" title="✅ 完成"></a>✅ 完成</h2><p>至此，Koishi 和 NapCat 的配置已全部完成。你的 QQ 机器人已经可以接收和发送消息了。接下来，你可以在 Koishi 的插件市场中探索和安装各种有趣的功能插件，打造属于你自己的强大机器人！</p>
+<hr>
+<h2 id="附录：常用-Docker-命令"><a href="#附录：常用-Docker-命令" class="headerlink" title="附录：常用 Docker 命令"></a>附录：常用 Docker 命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看所有正在运行的容器</span><br>docker ps<br><br><span class="hljs-comment"># 查看所有容器（包括已停止的）</span><br>docker ps -a<br><br><span class="hljs-comment"># 启动一个已停止的容器</span><br>docker start &lt;容器ID或名称&gt;<br><br><span class="hljs-comment"># 停止一个正在运行的容器</span><br>docker stop &lt;容器ID或名称&gt;<br><br><span class="hljs-comment"># 重启一个容器</span><br>docker restart &lt;容器ID或名称&gt;<br><br><span class="hljs-comment"># 进入一个正在运行的容器的命令行</span><br>docker <span class="hljs-built_in">exec</span> -it &lt;容器ID或名称&gt; /bin/sh<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="print-no-link">#聊天机器人</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>通过Docker+Koishi+NapCat搭建QQ机器人</div>
+      <div>https://wjiajian.github.io.git/2025/11/12/Koishi/Koishi/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>jiajian233</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年11月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/10/30/Blogs/Blogs/" title="使用Hexo通过GitHub Pages搭建博客">
+                        <span class="hidden-mobile">使用Hexo通过GitHub Pages搭建博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
