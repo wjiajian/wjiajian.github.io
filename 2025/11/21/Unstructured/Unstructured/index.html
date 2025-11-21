@@ -17,28 +17,29 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="author" content="jiajian233">
-  <meta name="keywords" content="blogs,Hexo,Github Pages">
+  <meta name="keywords" content="Python,Document Analysis">
   
-    <meta name="description" content="使用 Hexo 搭建个人博客使用 Hexo 快速搭建一个功能强大的个人博客。 1. 环境准备在开始之前，请确保电脑上已经安装了 Node.js (推荐使用 LTS 版本) 和 Git。 2. Hexo 安装与初始化 创建博客根目录创建一个文件夹作为博客的根目录，例如 myblogs。  全局安装 Hexo CLI打开终端，执行以下命令来安装 Hexo 命令行工具： 1npm install -g">
+    <meta name="description" content="Unstructured这是一个强大的开源库，旨在从任意格式（PDF, Word, PPT, HTML, Images, Emoils…）中提取干净的文本, 自动识别文件类型，自动处理分块（partition），自动 OCR。 它的核心理念是：“你不需要关心文件格式，只需给我文件，我还你结构化的数据。” 1. 核心优势：为什么选 Unstructured？传统的库（如 PyPDF2 或 pytho">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用Hexo通过GitHub Pages搭建博客">
-<meta property="og:url" content="https://wjiajian.github.io.git/2025/10/30/Blogs/Blogs/index.html">
+<meta property="og:title" content="Unstructured 及其使用入门">
+<meta property="og:url" content="https://wjiajian.github.io.git/2025/11/21/Unstructured/Unstructured/index.html">
 <meta property="og:site_name" content="Jiajian&#39;s Blog">
-<meta property="og:description" content="使用 Hexo 搭建个人博客使用 Hexo 快速搭建一个功能强大的个人博客。 1. 环境准备在开始之前，请确保电脑上已经安装了 Node.js (推荐使用 LTS 版本) 和 Git。 2. Hexo 安装与初始化 创建博客根目录创建一个文件夹作为博客的根目录，例如 myblogs。  全局安装 Hexo CLI打开终端，执行以下命令来安装 Hexo 命令行工具： 1npm install -g">
+<meta property="og:description" content="Unstructured这是一个强大的开源库，旨在从任意格式（PDF, Word, PPT, HTML, Images, Emoils…）中提取干净的文本, 自动识别文件类型，自动处理分块（partition），自动 OCR。 它的核心理念是：“你不需要关心文件格式，只需给我文件，我还你结构化的数据。” 1. 核心优势：为什么选 Unstructured？传统的库（如 PyPDF2 或 pytho">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://wjiajian.github.io.git/images/Blogs/hexo&github.jpg">
-<meta property="article:published_time" content="2025-10-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-11-21T07:31:03.029Z">
+<meta property="og:image" content="https://wjiajian.github.io.git/images/Unstructured/Unstructured.png">
+<meta property="article:published_time" content="2025-11-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-21T07:35:23.966Z">
 <meta property="article:author" content="jiajian233">
-<meta property="article:tag" content="Github Pages">
-<meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="blogs">
+<meta property="article:tag" content="Document Analysis">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Scoop">
+<meta property="article:tag" content="Unstructured">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://wjiajian.github.io.git/images/Blogs/hexo&github.jpg">
+<meta name="twitter:image" content="https://wjiajian.github.io.git/images/Unstructured/Unstructured.png">
   
   
   
-  <title>使用Hexo通过GitHub Pages搭建博客 - Jiajian&#39;s Blog</title>
+  <title>Unstructured 及其使用入门 - Jiajian&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -204,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="使用Hexo通过GitHub Pages搭建博客"></span>
+            <span id="subtitle" data-typed-text="Unstructured 及其使用入门"></span>
           
         </div>
 
@@ -215,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-10-30 00:00" pubdate>
-          2025年10月30日 凌晨
+        <time datetime="2025-11-21 00:00" pubdate>
+          2025年11月21日 凌晨
         </time>
       </span>
     
@@ -227,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          470 字
+          893 字
         
       </span>
     
@@ -238,7 +239,7 @@
         
         
         
-          4 分钟
+          8 分钟
         
       </span>
     
@@ -275,53 +276,62 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">使用Hexo通过GitHub Pages搭建博客</h1>
+            <h1 id="seo-header">Unstructured 及其使用入门</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="使用-Hexo-搭建个人博客"><a href="#使用-Hexo-搭建个人博客" class="headerlink" title="使用 Hexo 搭建个人博客"></a>使用 Hexo 搭建个人博客</h1><p>使用 Hexo 快速搭建一个功能强大的个人博客。</p>
-<h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h2><p>在开始之前，请确保电脑上已经安装了 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js</a> (推荐使用 LTS 版本) 和 <a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>。</p>
-<h2 id="2-Hexo-安装与初始化"><a href="#2-Hexo-安装与初始化" class="headerlink" title="2. Hexo 安装与初始化"></a>2. Hexo 安装与初始化</h2><ol>
-<li><p><strong>创建博客根目录</strong><br>创建一个文件夹作为博客的根目录，例如 <code>myblogs</code>。</p>
-</li>
-<li><p><strong>全局安装 Hexo CLI</strong><br>打开终端，执行以下命令来安装 Hexo 命令行工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install -g hexo-cli<br></code></pre></td></tr></table></figure>
-</li>
-<li><p><strong>初始化博客项目</strong><br>进入创建的博客根目录，然后执行以下命令来初始化一个新的 Hexo 项目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo init myblogs<br><span class="hljs-built_in">cd</span> myblogs<br>npm install<br></code></pre></td></tr></table></figure>
-<ul>
-<li><code>hexo init myblogs</code> 会在当前目录下创建一个名为 <code>myblogs</code> 的新文件夹，并下载 Hexo 的基本文件。</li>
-<li><code>cd myblogs</code> 进入博客项目目录。</li>
-<li><code>npm install</code> 会根据 <code>package.json</code> 文件安装项目所需的依赖。</li>
+                <h2 id="Unstructured"><a href="#Unstructured" class="headerlink" title="Unstructured"></a>Unstructured</h2><p>这是一个强大的开源库，旨在从任意格式（PDF, Word, PPT, HTML, Images, Emoils…）中提取干净的文本, 自动识别文件类型，自动处理分块（partition），自动 OCR。</p>
+<p>它的核心理念是：<strong>“你不需要关心文件格式，只需给我文件，我还你结构化的数据。”</strong></p>
+<h3 id="1-核心优势：为什么选-Unstructured？"><a href="#1-核心优势：为什么选-Unstructured？" class="headerlink" title="1. 核心优势：为什么选 Unstructured？"></a>1. 核心优势：为什么选 Unstructured？</h3><p>传统的库（如 <code>PyPDF2</code> 或 <code>python-docx</code>）通常只给你一堆混乱的字符串。而 <code>Unstructured</code> 会做以下几件高级的事：</p>
+<ol>
+<li><strong>归一化接口</strong>：无论是 <code>.pdf</code>, <code>.docx</code>, <code>.html</code>, <code>.ppt</code>, <code>.jpg</code>, 甚至 <code>.eml</code> (邮件)，都用同一个函数 <code>partition()</code> 处理。</li>
+<li><strong>语义分块 (Semantic Elements)</strong>：它不会把整个文档读成一个长字符串，而是将其拆分为有意义的“元素 (Elements)”，例如：<ul>
+<li><code>Title</code> (标题)</li>
+<li><code>NarrativeText</code> (正文段落)</li>
+<li><code>ListItem</code> (列表项)</li>
+<li><code>Table</code> (表格)</li>
 </ul>
 </li>
-</ol>
-<h2 id="3-本地预览"><a href="#3-本地预览" class="headerlink" title="3. 本地预览"></a>3. 本地预览</h2><p>本地预览博客效果，只需一行命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo server<br></code></pre></td></tr></table></figure>
-
-<p>然后用浏览器访问 <code>http://localhost:4000</code>，即可看到默认主题下的博客了。</p>
-<h2 id="4-部署到-GitHub-Pages"><a href="#4-部署到-GitHub-Pages" class="headerlink" title="4. 部署到 GitHub Pages"></a>4. 部署到 GitHub Pages</h2><ol>
-<li><p><strong>安装 Git 部署插件</strong><br>为了能将博客部署到 GitHub Pages，需要安装 <code>hexo-deployer-git</code> 插件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install hexo-deployer-git --save<br></code></pre></td></tr></table></figure>
-</li>
-<li><p><strong>配置 <code>_config.yml</code></strong><br>打开博客根目录下的 <code>_config.yml</code> 文件，在文件末尾找到 <code>deploy</code> 配置项，并修改为对应的 GitHub 仓库地址：</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">deploy:</span><br>  <span class="hljs-attr">type:</span> <span class="hljs-string">git</span><br>  <span class="hljs-attr">repo:</span> <span class="hljs-string">&lt;GitHub</span> <span class="hljs-string">仓库地址&gt;</span> <span class="hljs-comment"># 例如: https://github.com/user/repo.git</span><br>  <span class="hljs-attr">branch:</span> [<span class="hljs-string">branch</span>] <span class="hljs-comment"># 例如: main</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p><strong>一键部署</strong><br>依次执行以下命令，完成部署：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean      <span class="hljs-comment"># 清理缓存</span><br>hexo generate   <span class="hljs-comment"># 生成静态文件</span><br>hexo deploy     <span class="hljs-comment"># 部署到远端</span><br></code></pre></td></tr></table></figure>
-<p>现在，访问 GitHub Pages 地址，就能看到博客了！</p>
-</li>
-</ol>
-<h2 id="5-撰写新文章"><a href="#5-撰写新文章" class="headerlink" title="5. 撰写新文章"></a>5. 撰写新文章</h2><ol>
-<li><p><strong>创建新文章</strong><br>执行以下命令来创建一篇新的文章：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new <span class="hljs-string">&quot;我的第一篇文章&quot;</span><br></code></pre></td></tr></table></figure>
-<p>这会在 <code>source/_posts</code> 目录下生成一个 <code>我的第一篇文章.md</code> 文件。</p>
-</li>
-<li><p><strong>开始写作</strong><br>使用 Markdown 编辑器打开该文件，即可开始创作。</p>
-</li>
+<li><strong>智能策略</strong>：针对 PDF，它支持 OCR（光学字符识别）和对象检测（识别图片中的表格）。</li>
+<li><strong>元数据 (Metadata)</strong>：每个提取出的元素都包含页码、文件名、坐标位置等信息（这对 RAG 的“引用溯源”至关重要）。</li>
 </ol>
 <hr>
+<blockquote>
+<p>Unstructured 功能强大，因此依赖包非常重。如果不正确安装，处理 PDF 和图像时很容易报错。<br>为了处理 PDF 和图片（OCR），需要安装非 Python 的工具：<strong>Tesseract 和 Poppler</strong></p>
+</blockquote>
+<h2 id="🛠️-Windows-下的环境配置指南-Scoop-方案"><a href="#🛠️-Windows-下的环境配置指南-Scoop-方案" class="headerlink" title="🛠️ Windows 下的环境配置指南 (Scoop 方案)"></a>🛠️ Windows 下的环境配置指南 (Scoop 方案)</h2><p><strong>适用场景：</strong> 为 Python 的 <code>Unstructured</code>、<code>PaddleOCR</code> 或 <code>pdf2image</code> 库配置底层的 Tesseract (OCR) 和 Poppler (PDF 渲染) 依赖。</p>
+<h3 id="1-安装包管理器-Scoop"><a href="#1-安装包管理器-Scoop" class="headerlink" title="1. 安装包管理器 Scoop"></a>1. 安装包管理器 Scoop</h3><p>打开 <strong>PowerShell</strong>（无需管理员权限），依次执行以下命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 设置允许执行脚本</span><br><span class="hljs-built_in">Set-ExecutionPolicy</span> RemoteSigned <span class="hljs-literal">-Scope</span> CurrentUser<br><br><span class="hljs-comment"># 2. 下载并安装 Scoop</span><br><span class="hljs-built_in">irm</span> get.scoop.sh | <span class="hljs-built_in">iex</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-一键安装依赖工具"><a href="#2-一键安装依赖工具" class="headerlink" title="2. 一键安装依赖工具"></a>2. 一键安装依赖工具</h3><p>继续在 PowerShell 中执行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 添加扩展库 (extras bucket 包含我们要的工具)</span><br>scoop bucket add extras<br><br><span class="hljs-comment"># 2. 同时安装 Tesseract 和 Poppler</span><br>scoop install tesseract poppler<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-配置中文-OCR-支持-关键步骤"><a href="#3-配置中文-OCR-支持-关键步骤" class="headerlink" title="3. 配置中文 OCR 支持 (关键步骤)"></a>3. 配置中文 OCR 支持 (关键步骤)</h3><p>默认 Tesseract 只有英文库，解析中文 PDF&#x2F;图片需要手动添加中文数据包。</p>
+<ol>
+<li><strong>下载数据包：</strong><br>下载 <code>chi_sim.traineddata</code> (简体中文)：<ul>
+<li>官方下载地址: <a target="_blank" rel="noopener" href="https://github.com/tesseract-ocr/tessdata_best/blob/main/chi_sim.traineddata">GitHub - tessdata_best</a></li>
+</ul>
+</li>
+<li><strong>放入指定目录：</strong><br>将下载的文件放入以下文件夹（<code>&lt;你的用户名&gt;</code> 需替换）：<br><code>C:\Users\&lt;你的用户名&gt;\scoop\apps\tesseract\current\tessdata</code></li>
+</ol>
+<h3 id="4-验证安装"><a href="#4-验证安装" class="headerlink" title="4. 验证安装"></a>4. 验证安装</h3><p><strong>注意：</strong> 安装完成后，务必 <strong>重启</strong> 终端（PowerShell 或 CMD）以加载环境变量。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 检查 Tesseract 版本</span><br>tesseract <span class="hljs-literal">--version</span><br><span class="hljs-comment"># 输出应包含 tesseract v5.x.x</span><br><br><span class="hljs-comment"># 2. 检查中文库是否识别</span><br>tesseract <span class="hljs-literal">--list-langs</span><br><span class="hljs-comment"># 输出列表应包含 chi_sim</span><br><br><span class="hljs-comment"># 3. 检查 Poppler (pdftoppm)</span><br>pdftoppm <span class="hljs-literal">-h</span><br><span class="hljs-comment"># 输出应显示帮助信息</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="附录-partition-方法常用参数说明"><a href="#附录-partition-方法常用参数说明" class="headerlink" title="附录: partition()方法常用参数说明"></a>附录: partition()方法常用参数说明</h3><p><code>unstructured.partition</code> 模块是 Unstructured 库的核心，用于从各种文档类型中提取结构化元素。以下是 <code>partition</code> 方法的一些常用参数：</p>
+<ul>
+<li><code>filename</code> (str, optional): 本地文件的路径。当处理本地存储的文档时使用。</li>
+<li><code>url</code> (str, optional): 远程文件的 URL。当处理网络上的文档时使用。</li>
+<li><code>text</code> (str, optional): 直接作为字符串传入的文本内容。适用于处理内存中的文本。</li>
+<li><code>content_type</code> (str, optional): 文件的 MIME 类型，例如 <code>application/pdf</code>, <code>text/html</code>。有助于 Unstructured 更准确地识别文件类型。</li>
+<li><code>strategy</code> (str, optional): 提取策略，可选值包括 <code>&quot;fast&quot;</code>, <code>&quot;hi_res&quot;</code>。<ul>
+<li><code>&quot;fast&quot;</code>: 速度较快，但可能在复杂布局的文档上表现不佳。</li>
+<li><code>&quot;hi_res&quot;</code>: 使用更复杂的模型（如 detectron2），在处理复杂文档（如扫描的 PDF、图像）时效果更好，但速度较慢。</li>
+</ul>
+</li>
+<li><code>languages</code> (list of str, optional): 指定 OCR 识别时使用的语言列表，例如 <code>[&quot;eng&quot;, &quot;chi_sim&quot;]</code>。在使用 OCR 策略时非常重要。</li>
+</ul>
 
                 
               </div>
@@ -355,11 +365,13 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/blogs/" class="print-no-link">#blogs</a>
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
       
-        <a href="/tags/Hexo/" class="print-no-link">#Hexo</a>
+        <a href="/tags/Scoop/" class="print-no-link">#Scoop</a>
       
-        <a href="/tags/Github-Pages/" class="print-no-link">#Github Pages</a>
+        <a href="/tags/Document-Analysis/" class="print-no-link">#Document Analysis</a>
+      
+        <a href="/tags/Unstructured/" class="print-no-link">#Unstructured</a>
       
     </div>
   
@@ -371,8 +383,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>使用Hexo通过GitHub Pages搭建博客</div>
-      <div>https://wjiajian.github.io.git/2025/10/30/Blogs/Blogs/</div>
+      <div>Unstructured 及其使用入门</div>
+      <div>https://wjiajian.github.io.git/2025/11/21/Unstructured/Unstructured/</div>
     </div>
     <div class="license-meta">
       
@@ -384,7 +396,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年10月30日</div>
+          <div>2025年11月21日</div>
         </div>
       
       
@@ -416,18 +428,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/11/12/Koishi/Koishi/" title="通过Docker+Koishi+NapCat搭建QQ机器人">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">通过Docker+Koishi+NapCat搭建QQ机器人</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/10/30/Gmini%20CLI/Gemini%20CLI/" title="Gemini CLI 配置">
-                        <span class="hidden-mobile">Gemini CLI 配置</span>
+                      <a href="/2025/11/21/OpenCode/OpenCode/" title="Windows 上安装 OpenCode 并接入 Minimax M2">
+                        <span class="hidden-mobile">Windows 上安装 OpenCode 并接入 Minimax M2</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
