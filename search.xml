@@ -31,37 +31,6 @@
     
     
     <entry>
-      <title>Unstructured 及其使用入门</title>
-      <link href="/2025/11/21/Unstructured/Unstructured/"/>
-      <url>/2025/11/21/Unstructured/Unstructured/</url>
-      
-        <content type="html"><![CDATA[<h2 id="Unstructured"><a href="#Unstructured" class="headerlink" title="Unstructured"></a>Unstructured</h2><p>这是一个强大的开源库，旨在从任意格式（PDF, Word, PPT, HTML, Images, Emoils…）中提取干净的文本, 自动识别文件类型，自动处理分块（partition），自动 OCR。</p><p>它的核心理念是：<strong>“你不需要关心文件格式，只需给我文件，我还你结构化的数据。”</strong></p><h3 id="1-核心优势：为什么选-Unstructured？"><a href="#1-核心优势：为什么选-Unstructured？" class="headerlink" title="1. 核心优势：为什么选 Unstructured？"></a>1. 核心优势：为什么选 Unstructured？</h3><p>传统的库（如 <code>PyPDF2</code> 或 <code>python-docx</code>）通常只给你一堆混乱的字符串。而 <code>Unstructured</code> 会做以下几件高级的事：</p><ol><li><strong>归一化接口</strong>：无论是 <code>.pdf</code>, <code>.docx</code>, <code>.html</code>, <code>.ppt</code>, <code>.jpg</code>, 甚至 <code>.eml</code> (邮件)，都用同一个函数 <code>partition()</code> 处理。</li><li><strong>语义分块 (Semantic Elements)</strong>：它不会把整个文档读成一个长字符串，而是将其拆分为有意义的“元素 (Elements)”，例如：<ul><li><code>Title</code> (标题)</li><li><code>NarrativeText</code> (正文段落)</li><li><code>ListItem</code> (列表项)</li><li><code>Table</code> (表格)</li></ul></li><li><strong>智能策略</strong>：针对 PDF，它支持 OCR（光学字符识别）和对象检测（识别图片中的表格）。</li><li><strong>元数据 (Metadata)</strong>：每个提取出的元素都包含页码、文件名、坐标位置等信息（这对 RAG 的“引用溯源”至关重要）。</li></ol><hr><blockquote><p>Unstructured 功能强大，因此依赖包非常重。如果不正确安装，处理 PDF 和图像时很容易报错。<br>为了处理 PDF 和图片（OCR），需要安装非 Python 的工具：<strong>Tesseract 和 Poppler</strong></p></blockquote><h2 id="🛠️-Windows-下的环境配置指南-Scoop-方案"><a href="#🛠️-Windows-下的环境配置指南-Scoop-方案" class="headerlink" title="🛠️ Windows 下的环境配置指南 (Scoop 方案)"></a>🛠️ Windows 下的环境配置指南 (Scoop 方案)</h2><p><strong>适用场景：</strong> 为 Python 的 <code>Unstructured</code>、<code>PaddleOCR</code> 或 <code>pdf2image</code> 库配置底层的 Tesseract (OCR) 和 Poppler (PDF 渲染) 依赖。</p><h3 id="1-安装包管理器-Scoop"><a href="#1-安装包管理器-Scoop" class="headerlink" title="1. 安装包管理器 Scoop"></a>1. 安装包管理器 Scoop</h3><p>打开 <strong>PowerShell</strong>（无需管理员权限），依次执行以下命令：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 设置允许执行脚本</span><br><span class="hljs-built_in">Set-ExecutionPolicy</span> RemoteSigned <span class="hljs-literal">-Scope</span> CurrentUser<br><br><span class="hljs-comment"># 2. 下载并安装 Scoop</span><br><span class="hljs-built_in">irm</span> get.scoop.sh | <span class="hljs-built_in">iex</span><br></code></pre></td></tr></table></figure><h3 id="2-一键安装依赖工具"><a href="#2-一键安装依赖工具" class="headerlink" title="2. 一键安装依赖工具"></a>2. 一键安装依赖工具</h3><p>继续在 PowerShell 中执行：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 添加扩展库 (extras bucket 包含我们要的工具)</span><br>scoop bucket add extras<br><br><span class="hljs-comment"># 2. 同时安装 Tesseract 和 Poppler</span><br>scoop install tesseract poppler<br></code></pre></td></tr></table></figure><h3 id="3-配置中文-OCR-支持-关键步骤"><a href="#3-配置中文-OCR-支持-关键步骤" class="headerlink" title="3. 配置中文 OCR 支持 (关键步骤)"></a>3. 配置中文 OCR 支持 (关键步骤)</h3><p>默认 Tesseract 只有英文库，解析中文 PDF&#x2F;图片需要手动添加中文数据包。</p><ol><li><strong>下载数据包：</strong><br>下载 <code>chi_sim.traineddata</code> (简体中文)：<ul><li>官方下载地址: <a href="https://github.com/tesseract-ocr/tessdata_best/blob/main/chi_sim.traineddata">GitHub - tessdata_best</a></li></ul></li><li><strong>放入指定目录：</strong><br>将下载的文件放入以下文件夹（<code>&lt;你的用户名&gt;</code> 需替换）：<br><code>C:\Users\&lt;你的用户名&gt;\scoop\apps\tesseract\current\tessdata</code></li></ol><h3 id="4-验证安装"><a href="#4-验证安装" class="headerlink" title="4. 验证安装"></a>4. 验证安装</h3><p><strong>注意：</strong> 安装完成后，务必 <strong>重启</strong> 终端（PowerShell 或 CMD）以加载环境变量。</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 检查 Tesseract 版本</span><br>tesseract <span class="hljs-literal">--version</span><br><span class="hljs-comment"># 输出应包含 tesseract v5.x.x</span><br><br><span class="hljs-comment"># 2. 检查中文库是否识别</span><br>tesseract <span class="hljs-literal">--list-langs</span><br><span class="hljs-comment"># 输出列表应包含 chi_sim</span><br><br><span class="hljs-comment"># 3. 检查 Poppler (pdftoppm)</span><br>pdftoppm <span class="hljs-literal">-h</span><br><span class="hljs-comment"># 输出应显示帮助信息</span><br></code></pre></td></tr></table></figure><hr><h3 id="附录-partition-方法常用参数说明"><a href="#附录-partition-方法常用参数说明" class="headerlink" title="附录: partition()方法常用参数说明"></a>附录: partition()方法常用参数说明</h3><p><code>unstructured.partition</code> 模块是 Unstructured 库的核心，用于从各种文档类型中提取结构化元素。以下是 <code>partition</code> 方法的一些常用参数：</p><ul><li><code>filename</code> (str, optional): 本地文件的路径。当处理本地存储的文档时使用。</li><li><code>url</code> (str, optional): 远程文件的 URL。当处理网络上的文档时使用。</li><li><code>text</code> (str, optional): 直接作为字符串传入的文本内容。适用于处理内存中的文本。</li><li><code>content_type</code> (str, optional): 文件的 MIME 类型，例如 <code>application/pdf</code>, <code>text/html</code>。有助于 Unstructured 更准确地识别文件类型。</li><li><code>strategy</code> (str, optional): 提取策略，可选值包括 <code>&quot;fast&quot;</code>, <code>&quot;hi_res&quot;</code>。<ul><li><code>&quot;fast&quot;</code>: 速度较快，但可能在复杂布局的文档上表现不佳。</li><li><code>&quot;hi_res&quot;</code>: 使用更复杂的模型（如 detectron2），在处理复杂文档（如扫描的 PDF、图像）时效果更好，但速度较慢。</li></ul></li><li><code>languages</code> (list of str, optional): 指定 OCR 识别时使用的语言列表，例如 <code>[&quot;eng&quot;, &quot;chi_sim&quot;]</code>。在使用 OCR 策略时非常重要。</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> 笔记 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> Scoop </tag>
-            
-            <tag> Document Analysis </tag>
-            
-            <tag> Unstructured </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Windows 上安装 OpenCode 并接入 Minimax M2</title>
       <link href="/2025/11/21/OpenCode/OpenCode/"/>
       <url>/2025/11/21/OpenCode/OpenCode/</url>
@@ -85,6 +54,37 @@
             <tag> Claude Code </tag>
             
             <tag> Vibe Coding </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Unstructured 及其使用入门</title>
+      <link href="/2025/11/21/Unstructured/Unstructured/"/>
+      <url>/2025/11/21/Unstructured/Unstructured/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Unstructured"><a href="#Unstructured" class="headerlink" title="Unstructured"></a>Unstructured</h2><p>这是一个强大的开源库，旨在从任意格式（PDF, Word, PPT, HTML, Images, Emoils…）中提取干净的文本, 自动识别文件类型，自动处理分块（partition），自动 OCR。</p><p>它的核心理念是：<strong>“你不需要关心文件格式，只需给我文件，我还你结构化的数据。”</strong></p><h3 id="1-核心优势：为什么选-Unstructured？"><a href="#1-核心优势：为什么选-Unstructured？" class="headerlink" title="1. 核心优势：为什么选 Unstructured？"></a>1. 核心优势：为什么选 Unstructured？</h3><p>传统的库（如 <code>PyPDF2</code> 或 <code>python-docx</code>）通常只给你一堆混乱的字符串。而 <code>Unstructured</code> 会做以下几件高级的事：</p><ol><li><strong>归一化接口</strong>：无论是 <code>.pdf</code>, <code>.docx</code>, <code>.html</code>, <code>.ppt</code>, <code>.jpg</code>, 甚至 <code>.eml</code> (邮件)，都用同一个函数 <code>partition()</code> 处理。</li><li><strong>语义分块 (Semantic Elements)</strong>：它不会把整个文档读成一个长字符串，而是将其拆分为有意义的“元素 (Elements)”，例如：<ul><li><code>Title</code> (标题)</li><li><code>NarrativeText</code> (正文段落)</li><li><code>ListItem</code> (列表项)</li><li><code>Table</code> (表格)</li></ul></li><li><strong>智能策略</strong>：针对 PDF，它支持 OCR（光学字符识别）和对象检测（识别图片中的表格）。</li><li><strong>元数据 (Metadata)</strong>：每个提取出的元素都包含页码、文件名、坐标位置等信息（这对 RAG 的“引用溯源”至关重要）。</li></ol><hr><blockquote><p>Unstructured 功能强大，因此依赖包非常重。如果不正确安装，处理 PDF 和图像时很容易报错。<br>为了处理 PDF 和图片（OCR），需要安装非 Python 的工具：<strong>Tesseract 和 Poppler</strong></p></blockquote><h2 id="🛠️-Windows-下的环境配置指南-Scoop-方案"><a href="#🛠️-Windows-下的环境配置指南-Scoop-方案" class="headerlink" title="🛠️ Windows 下的环境配置指南 (Scoop 方案)"></a>🛠️ Windows 下的环境配置指南 (Scoop 方案)</h2><p><strong>适用场景：</strong> 为 Python 的 <code>Unstructured</code>、<code>PaddleOCR</code> 或 <code>pdf2image</code> 库配置底层的 Tesseract (OCR) 和 Poppler (PDF 渲染) 依赖。</p><h3 id="1-安装包管理器-Scoop"><a href="#1-安装包管理器-Scoop" class="headerlink" title="1. 安装包管理器 Scoop"></a>1. 安装包管理器 Scoop</h3><p>打开 <strong>PowerShell</strong>（无需管理员权限），依次执行以下命令：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 设置允许执行脚本</span><br><span class="hljs-built_in">Set-ExecutionPolicy</span> RemoteSigned <span class="hljs-literal">-Scope</span> CurrentUser<br><br><span class="hljs-comment"># 2. 下载并安装 Scoop</span><br><span class="hljs-built_in">irm</span> get.scoop.sh | <span class="hljs-built_in">iex</span><br></code></pre></td></tr></table></figure><h3 id="2-一键安装依赖工具"><a href="#2-一键安装依赖工具" class="headerlink" title="2. 一键安装依赖工具"></a>2. 一键安装依赖工具</h3><p>继续在 PowerShell 中执行：</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 添加扩展库 (extras bucket 包含我们要的工具)</span><br>scoop bucket add extras<br><br><span class="hljs-comment"># 2. 同时安装 Tesseract 和 Poppler</span><br>scoop install tesseract poppler<br></code></pre></td></tr></table></figure><h3 id="3-配置中文-OCR-支持-关键步骤"><a href="#3-配置中文-OCR-支持-关键步骤" class="headerlink" title="3. 配置中文 OCR 支持 (关键步骤)"></a>3. 配置中文 OCR 支持 (关键步骤)</h3><p>默认 Tesseract 只有英文库，解析中文 PDF&#x2F;图片需要手动添加中文数据包。</p><ol><li><strong>下载数据包：</strong><br>下载 <code>chi_sim.traineddata</code> (简体中文)：<ul><li>官方下载地址: <a href="https://github.com/tesseract-ocr/tessdata_best/blob/main/chi_sim.traineddata">GitHub - tessdata_best</a></li></ul></li><li><strong>放入指定目录：</strong><br>将下载的文件放入以下文件夹（<code>&lt;你的用户名&gt;</code> 需替换）：<br><code>C:\Users\&lt;你的用户名&gt;\scoop\apps\tesseract\current\tessdata</code></li></ol><h3 id="4-验证安装"><a href="#4-验证安装" class="headerlink" title="4. 验证安装"></a>4. 验证安装</h3><p><strong>注意：</strong> 安装完成后，务必 <strong>重启</strong> 终端（PowerShell 或 CMD）以加载环境变量。</p><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 1. 检查 Tesseract 版本</span><br>tesseract <span class="hljs-literal">--version</span><br><span class="hljs-comment"># 输出应包含 tesseract v5.x.x</span><br><br><span class="hljs-comment"># 2. 检查中文库是否识别</span><br>tesseract <span class="hljs-literal">--list-langs</span><br><span class="hljs-comment"># 输出列表应包含 chi_sim</span><br><br><span class="hljs-comment"># 3. 检查 Poppler (pdftoppm)</span><br>pdftoppm <span class="hljs-literal">-h</span><br><span class="hljs-comment"># 输出应显示帮助信息</span><br></code></pre></td></tr></table></figure><hr><h3 id="附录-partition-方法常用参数说明"><a href="#附录-partition-方法常用参数说明" class="headerlink" title="附录: partition()方法常用参数说明"></a>附录: partition()方法常用参数说明</h3><p><code>unstructured.partition</code> 模块是 Unstructured 库的核心，用于从各种文档类型中提取结构化元素。以下是 <code>partition</code> 方法的一些常用参数：</p><ul><li><code>filename</code> (str, optional): 本地文件的路径。当处理本地存储的文档时使用。</li><li><code>url</code> (str, optional): 远程文件的 URL。当处理网络上的文档时使用。</li><li><code>text</code> (str, optional): 直接作为字符串传入的文本内容。适用于处理内存中的文本。</li><li><code>content_type</code> (str, optional): 文件的 MIME 类型，例如 <code>application/pdf</code>, <code>text/html</code>。有助于 Unstructured 更准确地识别文件类型。</li><li><code>strategy</code> (str, optional): 提取策略，可选值包括 <code>&quot;fast&quot;</code>, <code>&quot;hi_res&quot;</code>。<ul><li><code>&quot;fast&quot;</code>: 速度较快，但可能在复杂布局的文档上表现不佳。</li><li><code>&quot;hi_res&quot;</code>: 使用更复杂的模型（如 detectron2），在处理复杂文档（如扫描的 PDF、图像）时效果更好，但速度较慢。</li></ul></li><li><code>languages</code> (list of str, optional): 指定 OCR 识别时使用的语言列表，例如 <code>[&quot;eng&quot;, &quot;chi_sim&quot;]</code>。在使用 OCR 策略时非常重要。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> Scoop </tag>
+            
+            <tag> Document Analysis </tag>
+            
+            <tag> Unstructured </tag>
             
         </tags>
       
